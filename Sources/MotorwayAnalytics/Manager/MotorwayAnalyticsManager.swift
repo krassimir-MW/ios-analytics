@@ -4,8 +4,37 @@ public class MotorwayAnalyticsManager {
 
     let analyticsProviders: [MotorwayAnalyticsProtocol]
 
-    public init(providers: [MotorwayAnalyticsProtocol]) {
-        self.analyticsProviders = providers
+    public enum Provider {
+        case firebase
+        case dataDog(config: (rumApplicationID: String,
+                              clientToken: String,
+                              environment: String,
+                              firstPartyHosts: Set<String>))
+        case snowplow(config: (appId: String, endpoint: String))
+    }
+
+    public init(providers: [Provider]) {
+        var analyticsProviders = [MotorwayAnalyticsProtocol]()
+
+        for provider in providers {
+            switch provider {
+            case .firebase:
+                let firebaseProvider = FirebaseAnalytics()
+                analyticsProviders.append(firebaseProvider)
+            case .dataDog(config: let config):
+                let dataDogProvider = DatadogAnalytics(rumApplicationID: config.rumApplicationID,
+                                                       clientToken: config.clientToken,
+                                                       environment: config.environment,
+                                                       firstPartyHosts: config.firstPartyHosts)
+                analyticsProviders.append(dataDogProvider)
+            case .snowplow(config: let config):
+                let snowplowProvider = SnowplowAnalytics(appId: config.appId,
+                                                         endpoint: config.endpoint)
+                analyticsProviders.append(snowplowProvider)
+            }
+        }
+
+        self.analyticsProviders = analyticsProviders
     }
 }
 

@@ -1,32 +1,29 @@
 import Foundation
 import Datadog
 import DatadogCrashReporting
-import MotorwayAPI
 
 public class DatadogAnalytics: MotorwayAnalyticsProtocol {
 
-    public init(isProduction: Bool) {
+    public init(rumApplicationID: String,
+                clientToken: String,
+                environment: String,
+                firstPartyHosts: Set<String>) {
+
         /// datadog 🐶
         Datadog.initialize(
             appContext: .init(),
             trackingConsent: .granted,
             configuration: Datadog.Configuration
                 .builderUsing(
-                    rumApplicationID: "d2e47e78-3a3e-403e-a14a-c0653174e0a4",
-                    clientToken: "pub0ad92f645245561426ba4222b0c9a75a",
-                    environment: isProduction ? "production" : "staging"
+                    rumApplicationID: rumApplicationID,
+                    clientToken: clientToken,
+                    environment: environment
                 )
                 .set(endpoint: .eu1)
                 .trackRUMLongTasks()
                 .trackBackgroundEvents()
                 .enableCrashReporting(using: DDCrashReportingPlugin())
-                .trackURLSession(firstPartyHosts: [
-                    "jrwirbsnye.execute-api.eu-west-1.amazonaws.com",
-                    "api.stage.motorway.co.uk",
-                    "stage.photo-uploader.motorway.co.uk",
-                    "fzmrcs00vf.execute-api.eu-west-1.amazonaws.com",
-                    "api.motorway.co.uk",
-                    "photo-uploader.motorway.co.uk"])
+                .trackURLSession(firstPartyHosts: firstPartyHosts)
                 .build()
         )
 
@@ -62,7 +59,7 @@ public class DatadogAnalytics: MotorwayAnalyticsProtocol {
 
         switch error {
         case let error as MotorwayError:
-            sendError(name: name, errorDescription: "mw-" + error.dataDogType, content: ["error-description": error.description])
+            sendError(name: name, errorDescription: "mw-" + error.dataDogType, content: ["error-description": "error.description"]) // TODO: Fix error description
         default:
             self.sendError(name: name, errorDescription: error.localizedDescription)
         }
@@ -107,7 +104,19 @@ extension DatadogAnalytics {
     }
 }
 
-public extension MotorwayError {
+enum MotorwayError: Error {
+    case unhandled
+    case badRequest
+    case unauthorized
+    case forbidden
+    case notFound
+    case unprocessableEntity
+    case clientError
+    case serverError
+    case invalidURL
+    case invalidData
+    case decodingError
+
     var dataDogType: String {
         switch self {
         case .unhandled: return "unhandled"
