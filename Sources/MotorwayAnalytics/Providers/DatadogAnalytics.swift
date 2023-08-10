@@ -47,21 +47,6 @@ public class DatadogAnalytics: MotorwayAnalyticsProtocol {
         }
     }
 
-    public func sendError(error: Error, name: MotorwayAnalytics.Event? = nil) {
-
-        guard let name else {
-            Global.rum.addError(error: error)
-            return
-        }
-
-        switch error {
-        case let error as MotorwayError:
-            sendError(name: name, errorDescription: "mw-" + error.dataDogType, content: ["error-description": "error.description"]) // TODO: Fix error description
-        default:
-            self.sendError(name: name, errorDescription: error.localizedDescription)
-        }
-    }
-
     public func sendError(name: MotorwayAnalytics.Event,
                           errorDescription: String? = nil,
                           content: [String: Any]? = nil,
@@ -97,36 +82,6 @@ extension DatadogAnalytics {
             return .console
         default:
             return .custom
-        }
-    }
-}
-
-enum MotorwayError: Error {
-    case unhandled
-    case badRequest
-    case unauthorized
-    case forbidden
-    case notFound
-    case unprocessableEntity
-    case clientError
-    case serverError
-    case invalidURL
-    case invalidData
-    case decodingError
-
-    var dataDogType: String {
-        switch self {
-        case .unhandled: return "unhandled"
-        case .badRequest: return "bad-request"
-        case .unauthorized: return "unauthorized"
-        case .forbidden: return "forbidden"
-        case .notFound: return "not-found"
-        case .unprocessableEntity: return "unprocessable-entity"
-        case .clientError: return "client-error"
-        case .serverError: return "server-error"
-        case .invalidURL: return "invalid-url"
-        case .invalidData: return "invalid-data"
-        case .decodingError: return "decoding-error"
         }
     }
 }
