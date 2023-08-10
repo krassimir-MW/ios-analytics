@@ -4,9 +4,9 @@ import SnowplowTracker
 public class SnowplowAnalytics: MotorwayAnalyticsProtocol {
     var tracker: TrackerController?
 
-    public init(appId: String, endpoint: String) {
-        tracker = Snowplow.createTracker(namespace: "appTracker", endpoint: endpoint) {
-          TrackerConfiguration(appId: appId)
+    public init(config: SnowplowConfig) {
+        tracker = Snowplow.createTracker(namespace: "appTracker", endpoint: config.endpoint) {
+            TrackerConfiguration(appId: config.appId)
               .base64Encoding(false)
               .sessionContext(true)
               .platformContext(true)

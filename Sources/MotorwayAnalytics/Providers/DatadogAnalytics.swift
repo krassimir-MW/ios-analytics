@@ -4,10 +4,7 @@ import DatadogCrashReporting
 
 public class DatadogAnalytics: MotorwayAnalyticsProtocol {
 
-    public init(rumApplicationID: String,
-                clientToken: String,
-                environment: String,
-                firstPartyHosts: Set<String>) {
+    public init(config: DatadogConfig) {
 
         /// datadog 🐶
         Datadog.initialize(
@@ -15,15 +12,15 @@ public class DatadogAnalytics: MotorwayAnalyticsProtocol {
             trackingConsent: .granted,
             configuration: Datadog.Configuration
                 .builderUsing(
-                    rumApplicationID: rumApplicationID,
-                    clientToken: clientToken,
-                    environment: environment
+                    rumApplicationID: config.rumApplicationID,
+                    clientToken: config.clientToken,
+                    environment: config.environment
                 )
                 .set(endpoint: .eu1)
                 .trackRUMLongTasks()
                 .trackBackgroundEvents()
                 .enableCrashReporting(using: DDCrashReportingPlugin())
-                .trackURLSession(firstPartyHosts: firstPartyHosts)
+                .trackURLSession(firstPartyHosts: config.firstPartyHosts)
                 .build()
         )
 

@@ -6,11 +6,9 @@ public class MotorwayAnalyticsManager {
 
     public enum Provider {
         case firebase
-        case dataDog(config: (rumApplicationID: String,
-                              clientToken: String,
-                              environment: String,
-                              firstPartyHosts: Set<String>))
-        case snowplow(config: (appId: String, endpoint: String))
+        case dataDog(DatadogConfig)
+        case snowplow(SnowplowConfig)
+        case provider(MotorwayAnalyticsProtocol)
     }
 
     public init(providers: [Provider]) {
@@ -22,15 +20,13 @@ public class MotorwayAnalyticsManager {
                 let firebaseProvider = FirebaseAnalytics()
                 analyticsProviders.append(firebaseProvider)
             case .dataDog(config: let config):
-                let dataDogProvider = DatadogAnalytics(rumApplicationID: config.rumApplicationID,
-                                                       clientToken: config.clientToken,
-                                                       environment: config.environment,
-                                                       firstPartyHosts: config.firstPartyHosts)
+                let dataDogProvider = DatadogAnalytics(config: config)
                 analyticsProviders.append(dataDogProvider)
             case .snowplow(config: let config):
-                let snowplowProvider = SnowplowAnalytics(appId: config.appId,
-                                                         endpoint: config.endpoint)
+                let snowplowProvider = SnowplowAnalytics(config: config)
                 analyticsProviders.append(snowplowProvider)
+            case .provider(let provider):
+                analyticsProviders.append(provider)
             }
         }
 
