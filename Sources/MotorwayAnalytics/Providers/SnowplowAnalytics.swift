@@ -20,7 +20,7 @@ public class SnowplowAnalytics: MotorwayAnalyticsProtocol {
         }
     }
 
-    public func sendEvent(eventType: MotorwayAnalytics.EventType, name: MotorwayAnalytics.Event, eventParams: MotorwayAnalytics.Params?) {
+    public func sendEvent(eventType: MotorwayAnalyticsEventType, name: MotorwayAnalyticsEvent, eventParams: MotorwayAnalyticsParams?) {
         // This method is empty because at the minute no business need to send the actual events.
     }
 

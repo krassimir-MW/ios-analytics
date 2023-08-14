@@ -28,29 +28,28 @@ public class DatadogAnalytics: MotorwayAnalyticsProtocol {
         Global.rum = RUMMonitor.initialize()
     }
 
-    public func sendEvent(eventType: MotorwayAnalytics.EventType, name: MotorwayAnalytics.Event, eventParams: MotorwayAnalytics.Params? = nil) {
-
-        switch eventType {
-        case .viewAppear:
-            Global.rum.startView(key: name.value, name: name.value, attributes: getPrettyPrintContent(content: eventParams?.content) ?? [:])
-        case .viewDisappear:
-            Global.rum.stopView(key: name.value, attributes: getPrettyPrintContent(content: eventParams?.content) ?? [:])
-        case .customInfo, .customError:
-            Global.rum.addUserAction(type: .custom, name: name.value, attributes: getPrettyPrintContent(content: eventParams?.content) ?? [:])
-        case .buttonPress:
-            Global.rum.addUserAction(type: .tap, name: name.value, attributes: getPrettyPrintContent(content: eventParams?.content) ?? [:])
-        default:
-            #if DEBUG
-            print("No event logged for eventType:\(eventType) in datadog")
-            #endif
-            return
-        }
+    public func sendEvent(eventType: MotorwayAnalyticsEventType, name: MotorwayAnalyticsEvent, eventParams: MotorwayAnalyticsParams? = nil) {
+//        switch eventType {
+//        case .viewAppear:
+//            Global.rum.startView(key: name.value, name: name.value, attributes: getPrettyPrintContent(content: eventParams?.content) ?? [:])
+//        case .viewDisappear:
+//            Global.rum.stopView(key: name.value, attributes: getPrettyPrintContent(content: eventParams?.content) ?? [:])
+//        case .customInfo, .customError:
+//            Global.rum.addUserAction(type: .custom, name: name.value, attributes: getPrettyPrintContent(content: eventParams?.content) ?? [:])
+//        case .buttonPress:
+//            Global.rum.addUserAction(type: .tap, name: name.value, attributes: getPrettyPrintContent(content: eventParams?.content) ?? [:])
+//        default:
+//            #if DEBUG
+//            print("No event logged for eventType:\(eventType) in datadog")
+//            #endif
+//            return
+//        }
     }
 
-    public func sendError(name: MotorwayAnalytics.Event,
+    public func sendError(name: MotorwayAnalyticsEvent,
                           errorDescription: String? = nil,
                           content: [String: Any]? = nil,
-                          source: MotorwayAnalytics.Source? = .custom) {
+                          source: MotorwatAnalyticsSource? = .custom) {
         Global.rum.addError(message: name.value,
                             type: errorDescription,
                             source: getSource(source: source),

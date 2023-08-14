@@ -36,28 +36,28 @@ public class MotorwayAnalyticsManager {
 
 extension MotorwayAnalyticsManager: MotorwayAnalyticsProtocol {
 
-    public func sendEvent(eventType: MotorwayAnalytics.EventType, name: MotorwayAnalytics.Event, eventParams: MotorwayAnalytics.Params? = nil) {
+    public func sendEvent(eventType: MotorwayAnalyticsEventType, name: MotorwayAnalyticsEvent, eventParams: MotorwayAnalyticsParams? = nil) {
         for provider in analyticsProviders {
             provider.sendEvent(eventType: eventType, name: name, eventParams: eventParams)
         }
     }
 
-    public func sendEvent(eventType: MotorwayAnalytics.EventType, content: [String: Any]? = nil) {
+    public func sendEvent(eventType: MotorwayAnalyticsEventType, content: [String: Any]? = nil) {
         for provider in analyticsProviders {
             provider.sendEvent(eventType: eventType, content: content)
         }
     }
 
-    public func sendError(error: Error, name: MotorwayAnalytics.Event? = nil) {
+    public func sendError(error: Error, name: MotorwayAnalyticsEvent? = nil) {
         for provider in analyticsProviders {
             provider.sendError(error: error, name: name)
         }
     }
 
-    public func sendError(name: MotorwayAnalytics.Event,
+    public func sendError(name: MotorwayAnalyticsEvent,
                           errorDescription: String? = nil,
                           content: [String: Any]? = nil,
-                          source: MotorwayAnalytics.Source? = .custom) {
+                          source: MotorwatAnalyticsSource? = .custom) {
         for provider in analyticsProviders {
             provider.sendError(name: name, errorDescription: errorDescription, content: content, source: source)
         }

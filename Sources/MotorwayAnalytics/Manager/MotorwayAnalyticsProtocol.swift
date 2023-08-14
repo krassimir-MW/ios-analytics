@@ -2,34 +2,34 @@ import Foundation
 
 public protocol MotorwayAnalyticsProtocol {
 
-    func sendEvent(eventType: MotorwayAnalytics.EventType, name: MotorwayAnalytics.Event, eventParams: MotorwayAnalytics.Params?)
-    func sendEvent(eventType: MotorwayAnalytics.EventType, content: [String: Any]?)
-    func sendError(error: Error, name: MotorwayAnalytics.Event?)
-    func sendError(name: MotorwayAnalytics.Event,
+    func sendEvent(eventType: MotorwayAnalyticsEventType, name: MotorwayAnalyticsEvent, eventParams: MotorwayAnalyticsParams?)
+    func sendEvent(eventType: MotorwayAnalyticsEventType, content: [String: Any]?)
+    func sendError(error: Error, name: MotorwayAnalyticsEvent?)
+    func sendError(name: MotorwayAnalyticsEvent,
                    errorDescription: String?,
                    content: [String: Any]?,
-                   source: MotorwayAnalytics.Source?)
+                   source: MotorwatAnalyticsSource?)
     func setUserInfo(id: String)
     func setUserInfo(content: [String: Any])
 }
 
 public extension MotorwayAnalyticsProtocol {
 
-    func sendEvent(eventType: MotorwayAnalytics.EventType, name: MotorwayAnalytics.Event, eventParams: MotorwayAnalytics.Params?) {}
-    func sendEvent(eventType: MotorwayAnalytics.EventType, content: [String: Any]?) {}
+    func sendEvent(eventType: MotorwayAnalyticsEventType, name: MotorwayAnalyticsEvent, eventParams: MotorwayAnalyticsParams?) {}
+    func sendEvent(eventType: MotorwayAnalyticsEventType, content: [String: Any]?) {}
     func setUserInfo(id: String) {}
     func setUserInfo(content: [String: Any]) {}
-    func sendError(error: Error, name: MotorwayAnalytics.Event?) {}
-    func sendError(name: MotorwayAnalytics.Event,
+    func sendError(error: Error, name: MotorwayAnalyticsEvent?) {}
+    func sendError(name: MotorwayAnalyticsEvent,
                    errorDescription: String?,
                    content: [String: Any]?,
-                   source: MotorwayAnalytics.Source?) {}
+                   source: MotorwatAnalyticsSource?) {}
 
-    func sendEvent(eventType: MotorwayAnalytics.EventType, name: MotorwayAnalytics.Event) {
+    func sendEvent(eventType: MotorwayAnalyticsEventType, name: MotorwayAnalyticsEvent) {
         self.sendEvent(eventType: eventType, name: name, eventParams: nil)
     }
 
-    func sendEvent(eventType: MotorwayAnalytics.EventType) {
+    func sendEvent(eventType: MotorwayAnalyticsEventType) {
         self.sendEvent(eventType: eventType, content: nil)
     }
 
@@ -37,7 +37,7 @@ public extension MotorwayAnalyticsProtocol {
         self.sendError(error: error, name: nil)
     }
 
-    func sendError(name: MotorwayAnalytics.Event, errorDescription: String? = nil, content: [String: Any]? = nil) {
+    func sendError(name: MotorwayAnalyticsEvent, errorDescription: String? = nil, content: [String: Any]? = nil) {
         self.sendError(name: name, errorDescription: errorDescription, content: content, source: .custom)
     }
 }
