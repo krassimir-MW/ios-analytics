@@ -1,40 +1,14 @@
 import Foundation
 
 public class MotorwayAnalyticsManager {
-
-    let analyticsProviders: [MotorwayAnalyticsProtocol]
-
-    public enum Provider {
-        case firebase
-        case dataDog(DatadogConfig)
-        case snowplow(SnowplowConfig)
-        case provider(MotorwayAnalyticsProtocol)
-    }
-
-    public init(providers: [Provider]) {
-        var analyticsProviders = [MotorwayAnalyticsProtocol]()
-
-        for provider in providers {
-            switch provider {
-            case .firebase:
-                let firebaseProvider = FirebaseAnalytics()
-                analyticsProviders.append(firebaseProvider)
-            case .dataDog(config: let config):
-                let dataDogProvider = DatadogAnalytics(config: config)
-                analyticsProviders.append(dataDogProvider)
-            case .snowplow(config: let config):
-                let snowplowProvider = SnowplowAnalytics(config: config)
-                analyticsProviders.append(snowplowProvider)
-            case .provider(let provider):
-                analyticsProviders.append(provider)
-            }
-        }
-
-        self.analyticsProviders = analyticsProviders
+    let analyticsProviders: [MotorwayAnalyticsProvider]
+    
+    public init(providers: [MotorwayAnalyticsProvider]) {
+        self.analyticsProviders = providers
     }
 }
 
-extension MotorwayAnalyticsManager: MotorwayAnalyticsProtocol {
+extension MotorwayAnalyticsManager: MotorwayAnalyticsProvider {
 
     public func sendEvent(eventType: MotorwayAnalyticsEventType, name: MotorwayAnalyticsEvent, eventParams: MotorwayAnalyticsParams? = nil) {
         for provider in analyticsProviders {
@@ -76,11 +50,10 @@ extension MotorwayAnalyticsManager: MotorwayAnalyticsProtocol {
     }
 }
 
-public extension MotorwayAnalyticsProtocol {
+public extension MotorwayAnalyticsProvider {
     /// Returns a provider cast to the inferred return type, or nil if a match is not found
     func getProvider<T>() -> T? {
         guard let manager = self as? MotorwayAnalyticsManager else { return nil }
-
         return manager.analyticsProviders.compactMap { $0 as? T }.first
     }
 }

@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol MotorwayAnalyticsProtocol {
+public protocol MotorwayAnalyticsProvider {
 
     func sendEvent(eventType: MotorwayAnalyticsEventType, name: MotorwayAnalyticsEvent, eventParams: MotorwayAnalyticsParams?)
     func sendEvent(eventType: MotorwayAnalyticsEventType, content: [String: Any]?)
@@ -13,7 +13,7 @@ public protocol MotorwayAnalyticsProtocol {
     func setUserInfo(content: [String: Any])
 }
 
-public extension MotorwayAnalyticsProtocol {
+public extension MotorwayAnalyticsProvider {
 
     func sendEvent(eventType: MotorwayAnalyticsEventType, name: MotorwayAnalyticsEvent, eventParams: MotorwayAnalyticsParams?) {}
     func sendEvent(eventType: MotorwayAnalyticsEventType, content: [String: Any]?) {}
