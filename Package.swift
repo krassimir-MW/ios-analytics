@@ -13,10 +13,6 @@ let package = Package(
             targets: ["MotorwayAnalytics"])
     ],
     dependencies: [
-      // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/DataDog/dd-sdk-ios", .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.6.0")),
-        .package(url: "https://github.com/snowplow/snowplow-ios-tracker", .upToNextMajor(from: "5.0.0"))
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -24,10 +20,6 @@ let package = Package(
         .target(
               name: "MotorwayAnalytics",
               dependencies: [
-                .product(name: "Datadog", package: "dd-sdk-ios"),
-                .product(name: "DatadogCrashReporting", package: "dd-sdk-ios"),
-                .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
-                .product(name: "SnowplowTracker", package: "snowplow-ios-tracker")
               ]),
         .testTarget(
             name: "MotorwayAnalyticsTests",

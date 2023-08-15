@@ -1,7 +1,5 @@
 import Foundation
 
-public typealias MAParams = MotorwayAnalyticsParams
-
 public struct MotorwayAnalyticsParams {
     public var pageName: String?
     public var content: [String: Any]?
